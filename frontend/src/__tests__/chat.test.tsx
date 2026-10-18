@@ -96,7 +96,6 @@ describe("AppSidebar component", () => {
         datasets={[mockDataset]}
         selectedDataset={mockDataset}
         onSelectDataset={vi.fn()}
-        onSelectQuestion={vi.fn()}
         health={mockHealth}
       />,
     );
@@ -104,22 +103,19 @@ describe("AppSidebar component", () => {
     expect(screen.getByText(mockDataset.description)).toBeTruthy();
   });
 
-  it("renders clickable example questions that invoke onSelectQuestion", () => {
-    const onSelectQuestion = vi.fn();
+  it("does not render dataset sample prompts", () => {
     render(
       <AppSidebar
         datasets={[mockDataset]}
         selectedDataset={mockDataset}
         onSelectDataset={vi.fn()}
-        onSelectQuestion={onSelectQuestion}
         health={mockHealth}
       />,
     );
-    const qBtn = screen.getByRole("button", {
-      name: mockDataset.example_questions[0],
-    });
-    fireEvent.click(qBtn);
-    expect(onSelectQuestion).toHaveBeenCalledWith(mockDataset.example_questions[0]);
+    for (const question of mockDataset.example_questions) {
+      expect(screen.queryByRole("button", { name: question })).toBeNull();
+    }
+    expect(screen.queryByText("Sample Prompts")).toBeNull();
   });
 });
 

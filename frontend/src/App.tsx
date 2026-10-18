@@ -180,7 +180,6 @@ export default function App() {
           datasets={datasets}
           selectedDataset={selectedDataset}
           onSelectDataset={handleSelectDataset}
-          onSelectQuestion={handleSelectQuestion}
           health={health}
           healthLoading={healthStatus === "loading"}
           disabled={chatLoading}
@@ -195,7 +194,30 @@ export default function App() {
 
         <main className="app-main" id="main-content" tabIndex={-1} aria-label="Main content area">
           {selectedDataset ? (
-            <div className="chat-area">
+            <div
+              className="chat-area"
+              onMouseMove={(event) => {
+                const bounds = event.currentTarget.getBoundingClientRect();
+                event.currentTarget.style.setProperty(
+                  "--chat-pointer-x",
+                  `${event.clientX - bounds.left}px`,
+                );
+                event.currentTarget.style.setProperty(
+                  "--chat-pointer-y",
+                  `${event.clientY - bounds.top}px`,
+                );
+              }}
+              onMouseLeave={(event) => {
+                event.currentTarget.style.setProperty(
+                  "--chat-pointer-x",
+                  "-1000px",
+                );
+                event.currentTarget.style.setProperty(
+                  "--chat-pointer-y",
+                  "-1000px",
+                );
+              }}
+            >
               <ChatTranscript
                 messages={messages}
                 loading={chatLoading}

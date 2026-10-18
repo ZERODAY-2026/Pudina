@@ -4,7 +4,7 @@
  * - Persistent Dataset selector
  * - Section A: Chat history & "+ New Chat" session manager
  * - Section B: Dataset access and loading guidance
- * - Section C: System Health & Starter questions
+ * - Section C: System Health
  */
 import { useState } from "react";
 import { ChatSession, Dataset, HealthResponse } from "../types";
@@ -16,7 +16,6 @@ interface Props {
   datasets: Dataset[];
   selectedDataset: Dataset | null;
   onSelectDataset: (datasetId: string) => void;
-  onSelectQuestion: (question: string) => void;
   health: HealthResponse | null;
   healthLoading?: boolean;
   disabled?: boolean;
@@ -35,7 +34,6 @@ export function AppSidebar({
   datasets,
   selectedDataset,
   onSelectDataset,
-  onSelectQuestion,
   health,
   healthLoading = false,
   disabled = false,
@@ -48,12 +46,6 @@ export function AppSidebar({
   onNewChat = () => {},
 }: Props) {
   const [activeTab, setActiveTab] = useState<SidebarTab>("chats");
-  const exampleQuestions = selectedDataset?.example_questions ?? [];
-
-  const handleSelectQuestion = (q: string) => {
-    onSelectQuestion(q);
-    onClose?.();
-  };
 
   const handleSelectSession = (id: string) => {
     onSelectSession(id);
@@ -163,26 +155,6 @@ export function AppSidebar({
             onNewChat={handleNewChat}
             disabled={disabled}
           />
-
-          {exampleQuestions.length > 0 && (
-            <div className="sidebar-section starter-prompts-section">
-              <div className="sidebar-label">Sample Prompts</div>
-              <div className="example-questions" role="group" aria-label="Suggested starter questions">
-                {exampleQuestions.map((q) => (
-                  <button
-                    key={q}
-                    type="button"
-                    className="example-question-btn"
-                    disabled={disabled}
-                    onClick={() => handleSelectQuestion(q)}
-                    title={q}
-                  >
-                    {q}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
       )}
 

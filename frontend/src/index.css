@@ -353,29 +353,6 @@ input, textarea, select { font-family: inherit; font-size: inherit; }
   padding: 0 var(--sp-1);
 }
 
-/* Example questions */
-.example-questions { display: flex; flex-direction: column; gap: var(--sp-1); }
-
-.example-question-btn {
-  text-align: left;
-  padding: var(--sp-2) var(--sp-3);
-  font-size: var(--fs-xs);
-  color: var(--clr-text-secondary);
-  background: transparent;
-  border: 1px solid transparent;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
-  line-height: var(--lh-normal);
-}
-.example-question-btn::before { content: "↗ "; color: var(--clr-accent); font-size: 0.75em; }
-.example-question-btn:hover {
-  background: var(--clr-bg-elevated);
-  border-color: var(--clr-border);
-  color: var(--clr-text-primary);
-}
-.example-question-btn:disabled { opacity: 0.45; cursor: default; }
-
 /* Sidebar divider */
 .sidebar-divider {
   height: 1px;
@@ -419,6 +396,25 @@ input, textarea, select { font-family: inherit; font-size: inherit; }
 }
 
 /* Section A: Chat Sessions */
+.chat-sessions-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-sessions-header {
+  margin-bottom: var(--sp-3);
+}
+
+.chat-sessions-section > .sidebar-label {
+  margin-bottom: var(--sp-2);
+}
+
+.sessions-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
 .chat-sessions-panel {
   display: flex;
   flex-direction: column;
@@ -722,10 +718,21 @@ input, textarea, select { font-family: inherit; font-size: inherit; }
 
 /* Chat wrapper */
 .chat-area {
+  --chat-pointer-x: -1000px;
+  --chat-pointer-y: -1000px;
   display: flex;
   flex-direction: column;
   height: 100%;
   overflow: hidden;
+  background-color: var(--clr-bg-base);
+  background-image:
+    radial-gradient(
+      circle 250px at var(--chat-pointer-x) var(--chat-pointer-y),
+      rgba(16, 185, 129, 0.16),
+      transparent 78%
+    ),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='72' viewBox='0 0 84 72'%3E%3Cg fill='none' stroke='%2310b981' stroke-opacity='.13' stroke-width='1'%3E%3Cpath d='M21 1 42 13 42 37 21 49 0 37 0 13ZM63 25 84 37 84 61 63 73 42 61 42 37ZM-21 25 0 37 0 61-21 73-42 61-42 37Z'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: auto, 84px 72px;
 }
 
 /* --------------------------------------------------------------------------

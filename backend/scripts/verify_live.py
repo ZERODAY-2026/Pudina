@@ -16,8 +16,9 @@ from src.pipeline import AnswerResult, Pipeline
 from src.snowflake_client import SnowflakeClient
 
 
-_PROJECT_ROOT = Path(__file__).resolve().parents[1]
-_CONFIG_PATH = _PROJECT_ROOT / "config" / "dataset_a.yaml"
+_BACKEND_ROOT = Path(__file__).resolve().parents[1]
+_REPOSITORY_ROOT = _BACKEND_ROOT.parent
+_CONFIG_PATH = _BACKEND_ROOT / "config" / "dataset_a.yaml"
 _TABLE_NAME = "BANK_MARKETING"
 _EXPECTED_ROW_COUNT = 45_211
 _BASE_REQUIRED_ENV = (
@@ -320,7 +321,7 @@ def _run_step(
 
 def main() -> int:
     """Run live checks in order, stopping at the first failed requirement."""
-    load_dotenv(_PROJECT_ROOT / ".env")
+    load_dotenv(_REPOSITORY_ROOT / ".env")
     if not _run_step(
         "Required environment configuration",
         _check_environment,

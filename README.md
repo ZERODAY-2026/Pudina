@@ -6,6 +6,35 @@ question, proposes SQL, and explains returned rows; a SQL guard validates the
 query, and Snowflake executes it with the read-only `DATAMIND_READER` role.
 Answers include the SQL and Snowflake query ID as evidence.
 
+## Quick start
+
+Complete the one-time [setup](#setup) first. Run the commands below from the
+`Data-mind` repository root in PowerShell. For example, if the terminal is
+currently in the parent `Hacktober` folder:
+
+```powershell
+Set-Location .\Data-mind
+```
+
+Confirm you are in the correct folder, then launch the complete app:
+
+```powershell
+Test-Path .\README.md
+.\.venv\Scripts\Activate.ps1
+.\scripts\build_and_serve.ps1
+```
+
+`Test-Path` should print `True`. If it prints `False`, change to the folder
+containing this README before continuing. If the virtual environment is already
+active, skip its activation command. Open [http://localhost:8000](http://localhost:8000)
+for the landing page, then choose **Launch DataMind** to open the live chat at
+`/chat`; you can also browse directly to
+[http://localhost:8000/chat](http://localhost:8000/chat). The launcher builds
+the frontend and serves it with the API; keep the PowerShell window open while
+using the app and press `Ctrl+C` to stop it. For frontend development with hot
+reload, use [`scripts/dev.ps1`](scripts/dev.ps1) instead and open
+http://localhost:5173.
+
 ## Features
 
 - React + TypeScript chat interface with dataset selection, saved chats, service
@@ -49,7 +78,19 @@ reference in [docs/datasets.md](docs/datasets.md).
 
 ## Setup
 
-Run commands from the repository root unless a step says otherwise.
+These instructions assume Windows PowerShell and the repository root as the
+working directory. If needed, change to the folder containing this README and
+confirm it before running project commands:
+
+```powershell
+Get-Location
+Test-Path .\README.md
+```
+
+The second command should print `True`. If it prints `False`, use
+`Set-Location 'C:\path\to\Data-mind'` with the actual path to your checkout.
+Keep the terminal at the repository root except where a step explicitly changes
+directories.
 
 ### 1. Install dependencies
 
@@ -58,10 +99,14 @@ python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
 python -m pip install -r backend\requirements.txt
-Push-Location frontend
+Push-Location .\frontend
 npm ci
 Pop-Location
 ```
+
+If PowerShell says script execution is disabled when activating the virtual
+environment, either use a new terminal with an allowed execution policy or
+invoke its Python directly as `.\.venv\Scripts\python.exe`.
 
 ### 2. Configure Snowflake roles
 
@@ -70,8 +115,14 @@ Snowflake username in that local copy, and run it in Snowsight as
 `ACCOUNTADMIN`:
 
 ```powershell
-Copy-Item scripts\setup.sql.example scripts\setup.sql
+if (-not (Test-Path .\scripts\setup.sql)) {
+    Copy-Item .\scripts\setup.sql.example .\scripts\setup.sql
+}
+notepad .\scripts\setup.sql
 ```
+
+In Snowsight, open the edited local `scripts\setup.sql`, review it, and run it
+as `ACCOUNTADMIN`. Do not paste account credentials into the SQL file.
 
 The script creates an XSMALL warehouse with auto-suspend, a SELECT-only
 `DATAMIND_READER`, and a separate `DATAMIND_LOADER` for loading and the
@@ -81,12 +132,16 @@ disposable-copy demo. Keep `scripts\setup.sql` local; it is gitignored. See
 ### 3. Configure credentials and Gemma
 
 ```powershell
-Copy-Item .env.example .env
+if (-not (Test-Path .\.env)) {
+    Copy-Item .\.env.example .\.env
+}
+notepad .\.env
 ```
 
 Fill in the Snowflake account, username, password, and loader role locally.
-Keep `SNOWFLAKE_ROLE=DATAMIND_READER`. The defaults select Ollama and
-`gemma3:4b`; install Ollama and pull the model if needed:
+Keep `SNOWFLAKE_ROLE=DATAMIND_READER` and set
+`SNOWFLAKE_LOAD_ROLE=DATAMIND_LOADER`. The defaults select Ollama and
+`gemma3:4b`; install and start Ollama, then pull the model if needed:
 
 ```powershell
 ollama pull gemma3:4b
@@ -96,22 +151,60 @@ Never commit `.env`, `scripts\setup.sql`, credentials, account identifiers, or
 usernames. For a hosted model, configure the API settings in `.env` as described
 in [Snowflake and Gemma](docs/snowflake_and_gemma.md).
 
-### 4. Download and load Bank Marketing
+### 4. Load a local/offline CSV (optional)
 
-The source CSV is downloaded locally and is not committed. From the repository
-root:
+If you already have a CSV file, you can load it without downloading the Bank
+Marketing archive. This uploads the file into Snowflake; it is not a fully
+offline app mode, since DataMind still queries Snowflake and requires Gemma.
+Keep the CSV local under the ignored `backend\data\` folder. For example, copy
+an attached or downloaded file into the project (replace the source path with
+the actual file path):
 
 ```powershell
-New-Item -ItemType Directory -Force backend\data | Out-Null
+New-Item -ItemType Directory -Force .\backend\data | Out-Null
+Copy-Item "C:\path\to\your-data.csv" .\backend\data\offline-data.csv
+Test-Path .\backend\data\offline-data.csv
+```
+
+For the UCI Bank Marketing dataset, use the semicolon delimiter and the
+configured `BANK_MARKETING` table:
+
+```powershell
+Push-Location .\backend
+..\.venv\Scripts\python.exe -m scripts.load_data `
+  ".\data\offline-data.csv" BANK_MARKETING --delimiter ";"
+..\.venv\Scripts\python.exe -m scripts.count_rows BANK_MARKETING
+Pop-Location
+```
+
+For a comma-delimited CSV, use `--delimiter ","` instead. The loader requires a
+header row, writes with `SNOWFLAKE_LOAD_ROLE=DATAMIND_LOADER`, and verifies the
+persisted row count. **It replaces the destination table contents**; confirm
+the table is safe to replace before loading. Do not point it at a source or
+production table.
+
+For a different CSV schema, load it to a new, simple table name rather than
+`BANK_MARKETING`. To query it in DataMind, also add a dataset YAML under
+`backend\config\` describing that table and its columns; the reader role must
+have `SELECT` access. See [Configuration](#configuration). CSV files are
+ignored by Git; do not commit private or licensed data.
+
+### 5. Download and load Bank Marketing
+
+Alternatively, download the UCI source CSV locally; it is not committed. From
+the repository root:
+
+```powershell
+New-Item -ItemType Directory -Force .\backend\data | Out-Null
 Invoke-WebRequest `
   -Uri "https://archive.ics.uci.edu/static/public/222/bank+marketing.zip" `
-  -OutFile "backend\data\bank-marketing.zip"
-Expand-Archive "backend\data\bank-marketing.zip" `
-  -DestinationPath "backend\data\bank-marketing" -Force
-Push-Location backend
-python -m scripts.load_data `
-  "data\bank-marketing\bank+marketing\bank-full.csv" BANK_MARKETING
-python -m scripts.count_rows BANK_MARKETING
+  -OutFile ".\backend\data\bank-marketing.zip"
+Expand-Archive ".\backend\data\bank-marketing.zip" `
+  -DestinationPath ".\backend\data\bank-marketing" -Force
+Push-Location .\backend
+..\.venv\Scripts\python.exe -m scripts.load_data `
+  ".\data\bank-marketing\bank+marketing\bank-full.csv" BANK_MARKETING
+..\.venv\Scripts\python.exe -m scripts.count_rows BANK_MARKETING
 Pop-Location
 ```
 
@@ -119,13 +212,13 @@ The CSV is semicolon-delimited; the loader verifies its final row count. If the
 archive extracts to a different subdirectory, pass that extracted `bank-full.csv`
 path to `load_data.py`.
 
-### 5. Verify live services
+### 6. Verify live services
 
 Start Ollama (or the hosted endpoint), then run:
 
 ```powershell
-Push-Location backend
-python -m scripts.verify_live
+Push-Location .\backend
+..\.venv\Scripts\python.exe -m scripts.verify_live
 Pop-Location
 ```
 
@@ -135,7 +228,7 @@ questions, and live edge cases. It stops at the first failure and reports an
 action. Live verification needs real Snowflake and Gemma configuration;
 automated tests do not.
 
-### 6. Start the app
+### 7. Start the app
 
 For the API and Vite development servers:
 

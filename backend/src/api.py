@@ -18,7 +18,7 @@ import requests
 from dotenv import load_dotenv
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.exceptions import RequestValidationError
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 from starlette.exceptions import HTTPException as StarletteHTTPException
@@ -620,6 +620,11 @@ def create_app(
             return _friendly_pipeline_error(elapsed_ms)
 
     if _DEFAULT_FRONTEND_DIST.is_dir():
+        @application.get("/chat", include_in_schema=False)
+        def serve_chat_page() -> FileResponse:
+            """Serve the frontend entry point for its client-side chat route."""
+            return FileResponse(_DEFAULT_FRONTEND_DIST / "index.html")
+
         application.mount(
             "/",
             StaticFiles(directory=str(_DEFAULT_FRONTEND_DIST), html=True),

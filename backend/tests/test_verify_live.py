@@ -39,6 +39,26 @@ def test_check_environment_accepts_required_reader_and_loader_roles(
     ]
 
 
+def test_main_loads_env_from_repository_root(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Load the root .env even though the verifier lives under backend/."""
+    from pathlib import Path
+
+    from scripts import verify_live
+
+    calls: list[Path] = []
+    monkeypatch.setattr(
+        verify_live,
+        "load_dotenv",
+        lambda path: calls.append(Path(path)) or True,
+    )
+    monkeypatch.setattr(verify_live, "_run_step", lambda *args: False)
+
+    assert verify_live.main() == 1
+    assert calls == [Path(verify_live.__file__).resolve().parents[2] / ".env"]
+
+
 def test_check_environment_requires_api_settings_without_printing_values(
     live_environment: None,
     monkeypatch: pytest.MonkeyPatch,

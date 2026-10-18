@@ -504,6 +504,7 @@ def test_built_frontend_is_served_after_api_routes(
     )
 
     assert "DataMind integrated" in client.get("/").text
+    assert "DataMind integrated" in client.get("/chat").text
     assert client.get("/api/datasets").status_code == 200
 
 

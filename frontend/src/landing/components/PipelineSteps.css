@@ -1,0 +1,154 @@
+.landing-page .pipeline-container {
+  display: flex;
+  flex-direction: row;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 6rem 2rem;
+  gap: 4rem;
+  position: relative;
+  color: #ECFDF5;
+}
+
+.landing-page .pipeline-left {
+  flex: 1;
+  position: sticky;
+  top: 20%;
+  height: fit-content;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.landing-page .pipeline-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+  padding-bottom: 6rem;
+}
+
+.landing-page .pipeline-pill {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: 9999px;
+  padding: 0.45rem 1.1rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #34D399;
+  margin-bottom: 1.75rem;
+  width: fit-content;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-family: var(--font-mono);
+}
+
+.landing-page .pipeline-heading {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, #ECFDF5 0%, #10B981 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: var(--font-display);
+}
+
+.landing-page .pipeline-subheading {
+  font-size: 1.125rem;
+  line-height: 1.65;
+  color: #9CA3AF;
+  max-width: 90%;
+}
+
+.landing-page .pipeline-card {
+  background: linear-gradient(145deg, #0F1612, #090D0B);
+  border: 1px solid #1E2D24;
+  border-radius: 24px;
+  padding: 3rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  min-height: 380px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.landing-page .pipeline-card:hover {
+  border-color: rgba(16, 185, 129, 0.45);
+  box-shadow: 0 12px 35px -10px rgba(16, 185, 129, 0.2);
+  transform: translateY(-3px);
+}
+
+.landing-page .card-step-number {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  font-family: var(--font-mono);
+  color: #10B981;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+.landing-page .card-step-badge {
+  position: absolute;
+  top: 1.75rem;
+  right: 2rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #10B981;
+}
+
+.landing-page .card-title {
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: #ECFDF5;
+  margin-bottom: 1rem;
+  z-index: 2;
+  position: relative;
+}
+
+.landing-page .card-description {
+  font-size: 1.05rem;
+  color: #9CA3AF;
+  line-height: 1.6;
+  z-index: 2;
+  position: relative;
+  max-width: 92%;
+}
+
+.landing-page .card-visual {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: 0.6;
+  background: radial-gradient(circle at center, rgba(16, 185, 129, 0.12) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+@media (max-width: 900px) {
+  .landing-page .pipeline-container {
+    flex-direction: column;
+  }
+
+  .landing-page .pipeline-left {
+    position: relative;
+    top: 0;
+    margin-bottom: 3rem;
+    max-height: none;
+  }
+}
