@@ -76,8 +76,8 @@ tables:
         type: NUMBER
         description: >-
           Days since the client was last contacted in a previous campaign;
-          999 means the client was not previously contacted.
-        sample_values: [999, 3, 5]
+          -1 means the client was not previously contacted.
+        sample_values: [-1, 3, 5]
         nullable: false
       - name: previous
         type: NUMBER
@@ -102,8 +102,9 @@ example_questions:
   - How many clients have a housing loan?
   - Which contact method was used most often?
 notes:
-  - The UCI source CSV contains no SQL NULLs; unknown is an explicit category value.
-  - pdays uses 999 as a sentinel for clients not previously contacted.
+  - The value unknown in job, education, contact, and poutcome indicates missing data.
+  - pdays = -1 means the client was not previously contacted.
+  - The target column y indicates whether the client subscribed to a term deposit.
   - balance is expressed in euros; duration is measured in seconds.
   - duration is known only after a call and should not be used for pre-call targeting.
   - The CSV source is semicolon-delimited; use bank-full.csv for the full dataset.

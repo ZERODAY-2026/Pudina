@@ -53,7 +53,7 @@ def load_csv(csv_path: Path, table_name: str, delimiter: str = ";") -> int:
     }
     connection = snowflake.connector.connect(**settings)
     try:
-        success, _chunks, row_count, _output = write_pandas(
+        success, _, row_count, _ = write_pandas(
             connection,
             frame,
             table_name.upper(),
@@ -64,7 +64,31 @@ def load_csv(csv_path: Path, table_name: str, delimiter: str = ";") -> int:
         )
         if not success:
             raise RuntimeError("Snowflake reported that the CSV load did not succeed.")
-        return row_count
+        source_row_count = len(frame.index)
+        if row_count != source_row_count:
+            raise RuntimeError(
+                "Snowflake reported loading "
+                f"{row_count} rows, but the CSV contains {source_row_count}."
+            )
+
+        cursor = connection.cursor()
+        try:
+            cursor.execute(
+                f"SELECT COUNT(*) FROM {table_name.upper()}"
+            )
+            count_result = cursor.fetchone()
+        finally:
+            cursor.close()
+
+        if count_result is None:
+            raise RuntimeError("Snowflake returned no result for the final row count.")
+        final_row_count = int(count_result[0])
+        if final_row_count != source_row_count:
+            raise RuntimeError(
+                f"Snowflake contains {final_row_count} rows after loading, "
+                f"but the CSV contains {source_row_count}."
+            )
+        return final_row_count
     finally:
         connection.close()
 

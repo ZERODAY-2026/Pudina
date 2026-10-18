@@ -121,7 +121,11 @@ class Pipeline:
             )
 
         classification = self.llm.generate_json(
-            build_classification_prompt(question, recent_history),
+            build_classification_prompt(
+                question,
+                recent_history,
+                self.schema_prompt,
+            ),
             ClassificationResult,
         )
 
