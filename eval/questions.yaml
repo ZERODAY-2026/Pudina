@@ -1,0 +1,179 @@
+- id: agg_total_rows
+  category: simple_aggregate
+  question: How many client contacts are in the dataset?
+  expected_answer:
+    type: numeric
+    ground_truth_key: total_rows
+  how_expected_computed: Count all rows in bank-full.csv using pandas DataFrame.shape.
+  held_out: false
+
+- id: agg_mean_age
+  category: simple_aggregate
+  question: What is the average age of contacted clients?
+  expected_answer:
+    type: numeric
+    ground_truth_key: mean_age
+  how_expected_computed: Take the pandas mean of the age column, excluding nulls.
+  held_out: false
+
+- id: agg_subscribers
+  category: simple_aggregate
+  question: How many clients subscribed to a term deposit?
+  expected_answer:
+    type: numeric
+    ground_truth_key: subscribed_count
+  how_expected_computed: Count rows whose y column equals yes, case-insensitively.
+  held_out: false
+
+- id: agg_mean_duration
+  category: simple_aggregate
+  question: What was the average duration of the last contact in seconds?
+  expected_answer:
+    type: numeric
+    ground_truth_key: mean_duration
+  how_expected_computed: Take the pandas mean of duration, excluding nulls.
+  held_out: true
+
+- id: filter_housing
+  category: filter
+  question: How many clients had a housing loan?
+  expected_answer:
+    type: numeric
+    ground_truth_key: housing_yes_count
+  how_expected_computed: Count rows where housing equals yes, case-insensitively.
+  held_out: false
+
+- id: filter_admin
+  category: filter
+  question: How many clients had an admin job?
+  expected_answer:
+    type: numeric
+    ground_truth_key: admin_job_count
+  how_expected_computed: Count rows where job equals admin., case-insensitively.
+  held_out: false
+
+- id: filter_campaign
+  category: filter
+  question: How many clients were contacted at least three times in this campaign?
+  expected_answer:
+    type: numeric
+    ground_truth_key: campaign_three_or_more_count
+  how_expected_computed: Count rows where numeric campaign is greater than or equal to 3.
+  held_out: true
+
+- id: filter_cellular
+  category: filter
+  question: How many clients were contacted by cellular phone?
+  expected_answer:
+    type: numeric
+    ground_truth_key: cellular_count
+  how_expected_computed: Count rows where contact equals cellular, case-insensitively.
+  held_out: false
+
+- id: filter_not_previously_contacted
+  category: filter
+  question: How many clients had not been contacted in a previous campaign?
+  expected_answer:
+    type: numeric
+    ground_truth_key: not_previously_contacted_count
+  how_expected_computed: Count rows where pdays equals the dataset sentinel value 999.
+  held_out: false
+
+- id: join_account_details
+  category: join
+  question: Join each marketing contact to the client's account profile details.
+  expected_behavior:
+    status: unsupported
+    contains: read-only questions
+  how_expected_computed: The configured dataset has one table and no join relationships, so account profiles are unavailable.
+  held_out: false
+
+- id: join_product_details
+  category: join
+  question: Join the campaign contacts to product purchase details.
+  expected_behavior:
+    status: unsupported
+    contains: BANK_MARKETING
+  how_expected_computed: The source dataset contains campaign contacts only and declares no product table or join keys.
+  held_out: false
+
+- id: multi_housing_subscribers
+  category: multi_step
+  question: How many clients with a housing loan subscribed to a term deposit?
+  expected_answer:
+    type: numeric
+    ground_truth_key: housing_subscribed_count
+  how_expected_computed: Count rows satisfying both housing equals yes and y equals yes.
+  held_out: false
+
+- id: multi_senior_subscribers
+  category: multi_step
+  question: How many clients over age 40 subscribed to a term deposit?
+  expected_answer:
+    type: numeric
+    ground_truth_key: over_40_subscribed_count
+  how_expected_computed: Count rows satisfying age greater than 40 and y equals yes.
+  held_out: false
+
+- id: multi_best_month
+  category: multi_step
+  question: Which month had the most term-deposit subscriptions?
+  expected_answer:
+    type: string
+    ground_truth_key: top_subscription_month
+  how_expected_computed: Filter y equals yes, count rows by month, and select the month with the largest count; ties use lexical order.
+  held_out: true
+
+- id: ambiguous_best_job
+  category: ambiguous
+  question: What is the best job?
+  expected_behavior:
+    status: ambiguous
+    contains: metric
+  how_expected_computed: Best is undefined without a ranking metric such as count, balance, or subscription rate.
+  held_out: false
+
+- id: ambiguous_top_clients
+  category: ambiguous
+  question: Show the top clients.
+  expected_behavior:
+    status: ambiguous
+    contains: metric
+  how_expected_computed: Top is undefined without a ranking metric or a client identifier in the schema.
+  held_out: false
+
+- id: empty_impossible_age
+  category: empty_result
+  question: Find clients older than 200 years.
+  expected_behavior:
+    status: answerable
+    no_rows: true
+  how_expected_computed: No source rows have age greater than 200, verified by a pandas filter.
+  held_out: true
+
+- id: empty_unknown_job
+  category: empty_result
+  question: Show clients whose job category is astronaut.
+  expected_behavior:
+    status: answerable
+    no_rows: true
+  how_expected_computed: No source rows have job equal to astronaut, verified by a pandas filter.
+  held_out: false
+
+- id: unsupported_prediction
+  category: unsupported
+  question: Predict which clients will subscribe next year.
+  expected_behavior:
+    status: unsupported
+    contains: read-only questions
+  how_expected_computed: The dataset contains historical campaign outcomes but no predictive model or future observations.
+  held_out: false
+
+- id: unsupported_delete
+  category: unsupported
+  question: Delete all client records from Snowflake.
+  expected_behavior:
+    status: unsupported
+    contains: BANK_MARKETING
+  how_expected_computed: DataMind permits read-only questions only; write and delete operations are forbidden.
+  held_out: true
