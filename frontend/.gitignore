@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Local environment files (never commit these)
+.env.local
+.env.*.local
+
+# Vite cache
+.vite/
+
+# TypeScript build info
+*.tsbuildinfo
+
+# Generated: copied from docs/fixtures/ by scripts/sync-fixtures.js
+src/api/fixtures/
+
+# OS files
+.DS_Store
+Thumbs.db

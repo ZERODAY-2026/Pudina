@@ -1,0 +1,12 @@
+snowflake-connector-python==3.18.1
+sqlglot==26.10.1
+pydantic==2.10.6
+PyYAML==6.0.2
+pytest==8.3.4
+pandas==2.2.3
+pyarrow==18.1.0
+python-dotenv==1.0.1
+requests==2.32.3
+fastapi==0.115.8
+uvicorn==0.34.0
+httpx==0.28.1

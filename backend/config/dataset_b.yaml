@@ -1,0 +1,387 @@
+dataset_name: TPC-H SF1
+description: >-
+  Snowflake's standard TPC-H SF1 sample data. The eight configured tables cover
+  customers, orders, order line items, parts, suppliers, nations, and regions.
+  Use configured join keys to answer questions across these related records.
+tables:
+  - name: SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.CUSTOMER
+    description: Customer accounts, their market segments, balances, and nation keys.
+    columns:
+      - name: C_CUSTKEY
+        type: NUMBER
+        description: Unique customer identifier and key used by ORDERS.O_CUSTKEY.
+        sample_values: [1, 2, 3]
+        nullable: false
+      - name: C_NAME
+        type: VARCHAR
+        description: Customer name.
+        sample_values: ["Customer#000000001", "Customer#000000002"]
+        nullable: false
+      - name: C_ADDRESS
+        type: VARCHAR
+        description: Customer street address.
+        sample_values: ["IVhzIApeRb ot,c,E", "XSTf4,NCwDVaWNe6tEgvwFM"]
+        nullable: false
+      - name: C_NATIONKEY
+        type: NUMBER
+        description: Nation key; joins to NATION.N_NATIONKEY.
+        sample_values: [15, 13, 1]
+        nullable: false
+      - name: C_PHONE
+        type: VARCHAR
+        description: Customer telephone number.
+        sample_values: ["25-989-741-2988", "23-768-687-3665"]
+        nullable: false
+      - name: C_ACCTBAL
+        type: NUMBER(15,2)
+        description: Customer account balance.
+        sample_values: [711.56, 121.65, 7498.12]
+        nullable: false
+      - name: C_MKTSEGMENT
+        type: VARCHAR
+        description: Customer market segment, such as BUILDING or AUTOMOBILE.
+        sample_values: ["BUILDING", "AUTOMOBILE", "MACHINERY"]
+        nullable: false
+      - name: C_COMMENT
+        type: VARCHAR
+        description: Free-text comment about the customer.
+        sample_values: ["regular accounts", "special requests"]
+        nullable: false
+  - name: SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.ORDERS
+    description: Customer orders, dates, statuses, and total prices.
+    columns:
+      - name: O_ORDERKEY
+        type: NUMBER
+        description: Unique order identifier; joins to LINEITEM.L_ORDERKEY.
+        sample_values: [1, 2, 3]
+        nullable: false
+      - name: O_CUSTKEY
+        type: NUMBER
+        description: Customer identifier; joins to CUSTOMER.C_CUSTKEY.
+        sample_values: [370, 781, 1234]
+        nullable: false
+      - name: O_ORDERSTATUS
+        type: VARCHAR
+        description: Order status code, commonly F, O, or P.
+        sample_values: ["O", "F", "P"]
+        nullable: false
+      - name: O_TOTALPRICE
+        type: NUMBER(15,2)
+        description: Total monetary price of the order; use this field for per-order total price.
+        sample_values: [172799.49, 38426.09, 205654.30]
+        nullable: false
+      - name: O_ORDERDATE
+        type: DATE
+        description: Date the order was placed.
+        sample_values: ["1996-01-02", "1996-12-01", "1997-05-15"]
+        nullable: false
+      - name: O_ORDERPRIORITY
+        type: VARCHAR
+        description: Order priority label.
+        sample_values: ["5-LOW", "1-URGENT", "3-MEDIUM"]
+        nullable: false
+      - name: O_CLERK
+        type: VARCHAR
+        description: Clerk identifier that entered the order.
+        sample_values: ["Clerk#000000951", "Clerk#000000880"]
+        nullable: false
+      - name: O_SHIPPRIORITY
+        type: NUMBER
+        description: Order shipping-priority value.
+        sample_values: [0]
+        nullable: false
+      - name: O_COMMENT
+        type: VARCHAR
+        description: Free-text comment about the order.
+        sample_values: ["final requests", "pending unusual requests"]
+        nullable: false
+  - name: SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.LINEITEM
+    description: Individual products, quantities, prices, discounts, and shipping per order.
+    columns:
+      - name: L_ORDERKEY
+        type: NUMBER
+        description: Parent order key; joins to ORDERS.O_ORDERKEY.
+        sample_values: [1, 1, 1]
+        nullable: false
+      - name: L_PARTKEY
+        type: NUMBER
+        description: Part key; joins to PART.P_PARTKEY and PARTSUPP.PS_PARTKEY.
+        sample_values: [155190, 67310, 63700]
+        nullable: false
+      - name: L_SUPPKEY
+        type: NUMBER
+        description: Supplier key; joins to SUPPLIER.S_SUPPKEY and PARTSUPP.PS_SUPPKEY.
+        sample_values: [7706, 7311, 3701]
+        nullable: false
+      - name: L_LINENUMBER
+        type: NUMBER
+        description: Line number within its parent order.
+        sample_values: [1, 2, 3]
+        nullable: false
+      - name: L_QUANTITY
+        type: NUMBER(15,2)
+        description: Quantity of the part on this order line.
+        sample_values: [17, 36, 8]
+        nullable: false
+      - name: L_EXTENDEDPRICE
+        type: NUMBER(15,2)
+        description: Extended line-item price before discount and tax; do not multiply by part retail price or subtract discount when asked for extended price.
+        sample_values: [21168.23, 45983.16, 13309.60]
+        nullable: false
+      - name: L_DISCOUNT
+        type: NUMBER(15,2)
+        description: Discount fraction applied to this line.
+        sample_values: [0.04, 0.09, 0.1]
+        nullable: false
+      - name: L_TAX
+        type: NUMBER(15,2)
+        description: Tax fraction applied to this line.
+        sample_values: [0.02, 0.06, 0.08]
+        nullable: false
+      - name: L_RETURNFLAG
+        type: VARCHAR
+        description: Return-status code for the line item.
+        sample_values: ["N", "R", "A"]
+        nullable: false
+      - name: L_LINESTATUS
+        type: VARCHAR
+        description: Shipping-status code for the line item.
+        sample_values: ["O", "F"]
+        nullable: false
+      - name: L_SHIPDATE
+        type: DATE
+        description: Date the line item shipped.
+        sample_values: ["1996-03-13", "1996-04-12", "1996-01-29"]
+        nullable: false
+      - name: L_COMMITDATE
+        type: DATE
+        description: Date the line item was committed for delivery.
+        sample_values: ["1996-02-12", "1996-03-12", "1996-01-29"]
+        nullable: false
+      - name: L_RECEIPTDATE
+        type: DATE
+        description: Date the line item was received.
+        sample_values: ["1996-03-22", "1996-04-20", "1996-02-04"]
+        nullable: false
+      - name: L_SHIPINSTRUCT
+        type: VARCHAR
+        description: Shipping instruction for this line item.
+        sample_values: ["DELIVER IN PERSON", "TAKE BACK RETURN", "NONE"]
+        nullable: false
+      - name: L_SHIPMODE
+        type: VARCHAR
+        description: Shipping mode used for this line item.
+        sample_values: ["TRUCK", "MAIL", "SHIP", "AIR"]
+        nullable: false
+      - name: L_COMMENT
+        type: VARCHAR
+        description: Free-text comment about the line item.
+        sample_values: ["ly final dependencies", "ven requests"]
+        nullable: false
+  - name: SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.NATION
+    description: Nations and their parent region keys.
+    columns:
+      - name: N_NATIONKEY
+        type: NUMBER
+        description: Unique nation identifier; joins to customer and supplier nation keys.
+        sample_values: [0, 1, 2]
+        nullable: false
+      - name: N_NAME
+        type: VARCHAR
+        description: Nation name.
+        sample_values: ["ALGERIA", "ARGENTINA", "BRAZIL"]
+        nullable: false
+      - name: N_REGIONKEY
+        type: NUMBER
+        description: Parent region key; joins to REGION.R_REGIONKEY.
+        sample_values: [0, 1, 2]
+        nullable: false
+      - name: N_COMMENT
+        type: VARCHAR
+        description: Free-text comment about the nation.
+        sample_values: ["furiously regular requests", "carefully final deposits"]
+        nullable: false
+  - name: SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.REGION
+    description: Geographic regions that contain nations.
+    columns:
+      - name: R_REGIONKEY
+        type: NUMBER
+        description: Unique region identifier; joins to NATION.N_REGIONKEY.
+        sample_values: [0, 1, 2]
+        nullable: false
+      - name: R_NAME
+        type: VARCHAR
+        description: Region name.
+        sample_values: ["AFRICA", "AMERICA", "ASIA", "EUROPE", "MIDDLE EAST"]
+        nullable: false
+      - name: R_COMMENT
+        type: VARCHAR
+        description: Free-text comment about the region.
+        sample_values: ["special requests", "regular deposits"]
+        nullable: false
+  - name: SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.PART
+    description: Products, their manufacturer, category, container, size, and retail price.
+    columns:
+      - name: P_PARTKEY
+        type: NUMBER
+        description: Unique part identifier; joins to LINEITEM.L_PARTKEY and PARTSUPP.PS_PARTKEY.
+        sample_values: [1, 2, 3]
+        nullable: false
+      - name: P_NAME
+        type: VARCHAR
+        description: Part or product name.
+        sample_values: ["almond antique cream wheat", "brown coral burlap puff"]
+        nullable: false
+      - name: P_MFGR
+        type: VARCHAR
+        description: Part manufacturer label.
+        sample_values: ["Manufacturer#1", "Manufacturer#2"]
+        nullable: false
+      - name: P_BRAND
+        type: VARCHAR
+        description: Part brand label.
+        sample_values: ["Brand#13", "Brand#23", "Brand#34"]
+        nullable: false
+      - name: P_TYPE
+        type: VARCHAR
+        description: Part product type and material description.
+        sample_values: ["STANDARD BRUSHED TIN", "SMALL PLATED COPPER"]
+        nullable: false
+      - name: P_SIZE
+        type: NUMBER
+        description: Part size value.
+        sample_values: [1, 2, 3]
+        nullable: false
+      - name: P_CONTAINER
+        type: VARCHAR
+        description: Packaging container for the part.
+        sample_values: ["SM CASE", "SM BOX", "MED BAG"]
+        nullable: false
+      - name: P_RETAILPRICE
+        type: NUMBER(15,2)
+        description: Retail price of the part.
+        sample_values: [901.00, 902.00, 903.00]
+        nullable: false
+      - name: P_COMMENT
+        type: VARCHAR
+        description: Free-text comment about the part.
+        sample_values: ["instructions sleep carefully", "regular requests"]
+        nullable: false
+  - name: SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.SUPPLIER
+    description: Suppliers, their account balances, and nation keys.
+    columns:
+      - name: S_SUPPKEY
+        type: NUMBER
+        description: Unique supplier identifier; joins to LINEITEM.L_SUPPKEY and PARTSUPP.PS_SUPPKEY.
+        sample_values: [1, 2, 3]
+        nullable: false
+      - name: S_NAME
+        type: VARCHAR
+        description: Supplier name.
+        sample_values: ["Supplier#000000001", "Supplier#000000002"]
+        nullable: false
+      - name: S_ADDRESS
+        type: VARCHAR
+        description: Supplier street address.
+        sample_values: ["N kD4on9OM Ipw3,s", "89eJ5ksX3ImxJ0E"]
+        nullable: false
+      - name: S_NATIONKEY
+        type: NUMBER
+        description: Supplier nation key; joins to NATION.N_NATIONKEY.
+        sample_values: [17, 5, 1]
+        nullable: false
+      - name: S_PHONE
+        type: VARCHAR
+        description: Supplier telephone number.
+        sample_values: ["27-918-335-1736", "15-679-861-2259"]
+        nullable: false
+      - name: S_ACCTBAL
+        type: NUMBER(15,2)
+        description: Supplier account balance.
+        sample_values: [5755.94, 4032.68, 4192.40]
+        nullable: false
+      - name: S_COMMENT
+        type: VARCHAR
+        description: Free-text comment about the supplier.
+        sample_values: ["Customer accounts", "regular deposits"]
+        nullable: false
+  - name: SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.PARTSUPP
+    description: Part availability and supply costs for each supplier-part pair.
+    columns:
+      - name: PS_PARTKEY
+        type: NUMBER
+        description: Part key; joins to PART.P_PARTKEY and LINEITEM.L_PARTKEY.
+        sample_values: [1, 1, 1]
+        nullable: false
+      - name: PS_SUPPKEY
+        type: NUMBER
+        description: Supplier key; joins to SUPPLIER.S_SUPPKEY and LINEITEM.L_SUPPKEY.
+        sample_values: [2, 2502, 5002]
+        nullable: false
+      - name: PS_AVAILQTY
+        type: NUMBER
+        description: Quantity of the part available from this supplier.
+        sample_values: [3325, 8076, 3956]
+        nullable: false
+      - name: PS_SUPPLYCOST
+        type: NUMBER(15,2)
+        description: Supplier's unit cost for the part.
+        sample_values: [771.64, 808.88, 993.49]
+        nullable: false
+      - name: PS_COMMENT
+        type: VARCHAR
+        description: Free-text comment about the supplier-part relationship.
+        sample_values: ["regular deposits", "carefully final requests"]
+        nullable: false
+joins:
+  - left_table: SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.CUSTOMER
+    left_column: C_NATIONKEY
+    right_table: SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.NATION
+    right_column: N_NATIONKEY
+  - left_table: SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.ORDERS
+    left_column: O_CUSTKEY
+    right_table: SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.CUSTOMER
+    right_column: C_CUSTKEY
+  - left_table: SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.LINEITEM
+    left_column: L_ORDERKEY
+    right_table: SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.ORDERS
+    right_column: O_ORDERKEY
+  - left_table: SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.LINEITEM
+    left_column: L_PARTKEY
+    right_table: SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.PART
+    right_column: P_PARTKEY
+  - left_table: SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.LINEITEM
+    left_column: L_SUPPKEY
+    right_table: SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.SUPPLIER
+    right_column: S_SUPPKEY
+  - left_table: SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.LINEITEM
+    left_column: L_PARTKEY
+    right_table: SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.PARTSUPP
+    right_column: PS_PARTKEY
+  - left_table: SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.LINEITEM
+    left_column: L_SUPPKEY
+    right_table: SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.PARTSUPP
+    right_column: PS_SUPPKEY
+  - left_table: SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.NATION
+    left_column: N_REGIONKEY
+    right_table: SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.REGION
+    right_column: R_REGIONKEY
+  - left_table: SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.SUPPLIER
+    left_column: S_NATIONKEY
+    right_table: SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.NATION
+    right_column: N_NATIONKEY
+example_questions:
+  - How many customer records are in the sample?
+  - What is the average order total price?
+  - How many orders were placed by BUILDING-segment customers?
+  - Which three nations have the most orders?
+  - How many suppliers belong to each region?
+notes:
+  - All configured table names are fully qualified in SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.
+  - CUSTOMER.C_NATIONKEY and SUPPLIER.S_NATIONKEY reference NATION.N_NATIONKEY.
+  - NATION.N_REGIONKEY references REGION.R_REGIONKEY.
+  - ORDERS.O_CUSTKEY references CUSTOMER.C_CUSTKEY; LINEITEM.L_ORDERKEY references ORDERS.O_ORDERKEY.
+  - LINEITEM part/supplier pairs map to PARTSUPP using both L_PARTKEY = PS_PARTKEY and L_SUPPKEY = PS_SUPPKEY.
+  - This is benchmark sample data, not a predictive model; use only query results for factual answers.
+  - A per-order total price is ORDERS.O_TOTALPRICE; do not reconstruct it from line-item quantities or retail prices.
+  - A region's display name is REGION.R_NAME; its key is REGION.R_REGIONKEY.

@@ -3,12 +3,25 @@
     {
       "id": "bank-marketing",
       "name": "UCI Bank Marketing",
-      "description": "Portuguese bank campaign contacts and term-deposit subscription outcomes.",
+      "description": "Portuguese bank direct-marketing campaign outcomes. Each row represents a client contacted during a campaign; the target indicates whether the client subscribed to a term deposit.",
       "example_questions": [
         "How many clients are in the dataset?",
         "How many clients subscribed to a term deposit?",
         "What is the average age of clients?",
-        "How many clients had a housing loan?"
+        "How many clients have a housing loan?",
+        "Which contact method was used most often?"
+      ]
+    },
+    {
+      "id": "tpc-h-sf1",
+      "name": "TPC-H SF1",
+      "description": "Snowflake's standard TPC-H SF1 sample data. The eight configured tables cover customers, orders, order line items, parts, suppliers, nations, and regions. Use configured join keys to answer questions across these related records.",
+      "example_questions": [
+        "How many customer records are in the sample?",
+        "What is the average order total price?",
+        "How many orders were placed by BUILDING-segment customers?",
+        "Which three nations have the most orders?",
+        "How many suppliers belong to each region?"
       ]
     }
   ]

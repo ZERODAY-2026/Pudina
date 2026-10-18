@@ -1,0 +1,70 @@
+- id: tpch_customer_count
+  category: simple_aggregate
+  question: How many customer records are in this sample?
+  expected_answer:
+    type: numeric
+    ground_truth_key: tpch_customer_count
+  how_expected_computed: Run the independent COUNT(*) query on the configured CUSTOMER table.
+- id: tpch_order_count
+  category: simple_aggregate
+  question: How many orders are recorded?
+  expected_answer:
+    type: numeric
+    ground_truth_key: tpch_order_count
+  how_expected_computed: Run the independent COUNT(*) query on the configured ORDERS table.
+- id: tpch_average_order_value
+  category: simple_aggregate
+  question: What is the average total price per order?
+  expected_answer:
+    type: numeric
+    ground_truth_key: tpch_average_order_value
+  how_expected_computed: Run the independent AVG query on ORDERS.O_TOTALPRICE.
+- id: tpch_total_order_value
+  category: simple_aggregate
+  question: What is the combined total price of all orders?
+  expected_answer:
+    type: numeric
+    ground_truth_key: tpch_total_order_value
+  how_expected_computed: Run the independent SUM query on ORDERS.O_TOTALPRICE.
+- id: tpch_building_orders
+  category: join
+  question: How many orders were placed by customers in the BUILDING market segment?
+  expected_answer:
+    type: numeric
+    ground_truth_key: tpch_building_orders
+  how_expected_computed: Count ORDERS joined to CUSTOMER by customer key and filter the segment.
+- id: tpch_top_order_nations
+  category: join
+  question: Which three nations account for the most orders?
+  expected_answer:
+    type: string_list
+    ground_truth_key: tpch_top_order_nations
+  how_expected_computed: Group orders by customer nation through CUSTOMER and NATION, order counts descending, and take three.
+- id: tpch_air_line_average
+  category: filter
+  question: What is the average extended price of line items shipped by air?
+  expected_answer:
+    type: numeric
+    ground_truth_key: tpch_air_line_average
+  how_expected_computed: Run the independent AVG query on LINEITEM filtered to AIR shipping mode.
+- id: tpch_suppliers_by_region
+  category: join
+  question: How many suppliers belong to each geographic region?
+  expected_answer:
+    type: string_list
+    ground_truth_key: tpch_suppliers_by_region
+  how_expected_computed: Group SUPPLIER rows by region through NATION and REGION.
+- id: tpch_ambiguous_best_region
+  category: ambiguous
+  question: Which region is best?
+  expected_behavior:
+    status: ambiguous
+    contains: metric
+  how_expected_computed: The request gives no metric by which to rank regions.
+- id: tpch_unsupported_future_orders
+  category: unsupported
+  question: Predict which customers will place an order next year.
+  expected_behavior:
+    status: unsupported
+    contains: read-only
+  how_expected_computed: The historical sample schema does not support future predictions.

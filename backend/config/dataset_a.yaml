@@ -1,0 +1,119 @@
+dataset_name: UCI Bank Marketing
+description: >-
+  Portuguese bank direct-marketing campaign outcomes. Each row represents a
+  client contacted during a campaign; the target indicates whether the client
+  subscribed to a term deposit.
+tables:
+  - name: BANK_MARKETING
+    description: One row per client contact in the bank marketing campaign.
+    columns:
+      - name: age
+        type: NUMBER
+        description: Client age in years.
+        sample_values: [30, 39, 45]
+        nullable: false
+      - name: job
+        type: VARCHAR
+        description: >-
+          Client job, occupation, profession, or work category; values include
+          admin., technician, blue-collar, and student.
+        sample_values: ["admin.", "technician", "blue-collar", "student"]
+        nullable: false
+      - name: marital
+        type: VARCHAR
+        description: Client marital or relationship-status category.
+        sample_values: ["married", "single", "divorced"]
+        nullable: false
+      - name: education
+        type: VARCHAR
+        description: Client education level or educational-attainment category.
+        sample_values: ["tertiary", "secondary", "primary"]
+        nullable: false
+      - name: default
+        type: VARCHAR
+        description: Whether the client's credit is in default.
+        sample_values: ["no", "yes", "no"]
+        nullable: false
+      - name: balance
+        type: NUMBER
+        description: Client's average yearly account balance in euros.
+        sample_values: [1787, 4789, 1350]
+        nullable: false
+      - name: housing
+        type: VARCHAR
+        description: Whether the client has a housing loan or mortgage.
+        sample_values: ["yes", "no", "yes"]
+        nullable: false
+      - name: loan
+        type: VARCHAR
+        description: Whether the client has a personal loan.
+        sample_values: ["no", "yes", "no"]
+        nullable: false
+      - name: contact
+        type: VARCHAR
+        description: Contact channel or communication method used for the client.
+        sample_values: ["cellular", "telephone", "unknown"]
+        nullable: false
+      - name: day
+        type: NUMBER
+        description: Day of the month of the last contact.
+        sample_values: [5, 12, 20]
+        nullable: false
+      - name: month
+        type: VARCHAR
+        description: Month of the year of the last contact.
+        sample_values: ["may", "jul", "aug"]
+        nullable: false
+      - name: duration
+        type: NUMBER
+        description: Length of the last call or contact, in seconds.
+        sample_values: [79, 220, 643]
+        nullable: false
+      - name: campaign
+        type: NUMBER
+        description: Number of times this client was reached during this campaign.
+        sample_values: [1, 2, 3]
+        nullable: false
+      - name: pdays
+        type: NUMBER
+        description: >-
+          Elapsed days since the client's previous campaign contact; -1 means
+          the client had never been contacted in a previous campaign.
+        sample_values: [-1, 3, 5]
+        nullable: false
+      - name: previous
+        type: NUMBER
+        description: Number of earlier campaign contacts with this client.
+        sample_values: [0, 1, 2]
+        nullable: false
+      - name: poutcome
+        type: VARCHAR
+        description: Outcome of the previous marketing campaign.
+        sample_values: ["unknown", "failure", "success"]
+        nullable: false
+      - name: y
+        type: VARCHAR
+        description: >-
+          Whether the client subscribed, signed up, or converted to a term
+          deposit; yes means subscribed and no means not subscribed.
+        sample_values: ["no", "yes", "no"]
+        nullable: false
+joins: []
+example_questions:
+  - How many clients are in the dataset?
+  - How many clients subscribed to a term deposit?
+  - What is the average age of clients?
+  - How many clients have a housing loan?
+  - Which contact method was used most often?
+notes:
+  - The value unknown in job, education, contact, and poutcome indicates missing data.
+  - pdays = -1 means the client was not previously contacted.
+  - The target column y indicates whether the client subscribed to a term deposit.
+  - Job, occupation, profession, and work category refer to job; student is a job category.
+  - Signup and take-up refer to y; account balance refers to balance.
+  - Contact channel or method refers to contact.
+  - Only BANK_MARKETING is configured; no external account, card, or product tables or join keys are available.
+  - This dataset contains historical outcomes, not a predictive model or future outcomes.
+  - balance is expressed in euros; duration is measured in seconds.
+  - duration is known only after a call and should not be used for pre-call targeting.
+  - The CSV source is semicolon-delimited; use bank-full.csv for the full dataset.

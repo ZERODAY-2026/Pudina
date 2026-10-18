@@ -3,7 +3,7 @@
   "checks": {
     "config": {
       "ok": true,
-      "message": "Bank Marketing dataset configuration loaded."
+      "message": "Dataset configuration loaded."
     },
     "snowflake": {
       "ok": true,

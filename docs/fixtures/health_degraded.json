@@ -3,7 +3,7 @@
   "checks": {
     "config": {
       "ok": true,
-      "message": "Bank Marketing dataset configuration loaded."
+      "message": "Dataset configuration loaded."
     },
     "snowflake": {
       "ok": true,
@@ -11,7 +11,7 @@
     },
     "gemma": {
       "ok": false,
-      "message": "Gemma backend did not respond; natural-language answers are unavailable."
+      "message": "Gemma backend is unavailable."
     }
   }
 }
