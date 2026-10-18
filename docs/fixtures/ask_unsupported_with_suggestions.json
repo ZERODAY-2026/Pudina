@@ -1,0 +1,22 @@
+{
+  "status": "unsupported",
+  "answer": "I can't answer questions about sales in this dataset. I can answer read-only questions about UCI Bank Marketing, including fields like age, balance, job, and subscription outcomes.",
+  "explanation": "The concept 'sales' does not exist in the UCI Bank Marketing schema.",
+  "assumptions": [],
+  "suggestions": [
+    "How many clients subscribed to a term deposit?",
+    "What is the average balance by job?",
+    "How many clients were contacted by cellular phone?"
+  ],
+  "notes": [
+    "The concept 'sales' maps to no table, column, or glossary term in this dataset."
+  ],
+  "sql": null,
+  "columns": [],
+  "rows": [],
+  "row_count": 0,
+  "truncated": false,
+  "query_id": null,
+  "clarifying_question": null,
+  "elapsed_ms": 25
+}

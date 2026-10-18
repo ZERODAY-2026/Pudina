@@ -1,0 +1,24 @@
+{
+  "status": "empty",
+  "answer": "No rows matched the requested criteria.",
+  "explanation": "No rows matched nation = 'ATLANTIS'. The dataset has 25 nations such as GERMANY, FRANCE, and JAPAN.",
+  "assumptions": [
+    "Filter on nation = 'ATLANTIS' yielded no rows."
+  ],
+  "suggestions": [
+    "What was the total order value for customers in GERMANY?",
+    "Which three nations account for the most orders?",
+    "How many customers are in JAPAN?"
+  ],
+  "notes": [
+    "The requested value 'ATLANTIS' was not found in the nation catalog."
+  ],
+  "sql": "SELECT N_NAME, COUNT(*) AS ORDER_COUNT FROM SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.ORDERS AS O JOIN SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.CUSTOMER AS C ON O.O_CUSTKEY = C.C_CUSTKEY JOIN SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.NATION AS N ON C.C_NATIONKEY = N.N_NATIONKEY WHERE N.N_NAME = 'ATLANTIS' GROUP BY N.N_NAME",
+  "columns": ["N_NAME", "ORDER_COUNT"],
+  "rows": [],
+  "row_count": 0,
+  "truncated": false,
+  "query_id": "01c7cf03-0007-82d8-0002-106200026b14",
+  "clarifying_question": null,
+  "elapsed_ms": 96
+}
