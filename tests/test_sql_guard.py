@@ -29,6 +29,18 @@ def test_accepts_one_select(sql: str) -> None:
     validate_read_only_sql(sql, ALLOWLIST)
 
 
+def test_accepts_quoted_keyword_like_column_identifiers() -> None:
+    """Preserve quoted keyword-like Snowflake columns through SQL validation."""
+    validated = validate_read_only_sql(
+        'SELECT "DEFAULT", "DAY", "MONTH" FROM BANK_MARKETING',
+        ALLOWLIST,
+    )
+
+    assert '"DEFAULT"' in validated
+    assert '"DAY"' in validated
+    assert '"MONTH"' in validated
+
+
 @pytest.mark.parametrize(
     "sql",
     (

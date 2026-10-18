@@ -1,6 +1,6 @@
 """Tests for the read-only Snowflake client."""
 
-from unittest.mock import Mock
+from unittest.mock import Mock, call
 
 import pytest
 
@@ -45,8 +45,12 @@ def test_run_query_returns_rows_and_metadata(
     assert result["row_count"] == 1
     assert result["elapsed_ms"] >= 0
     assert connect.call_args.kwargs["role"] == "DATAMIND_READER"
+    assert cursor.execute.call_args_list == [
+        call("USE SECONDARY ROLES NONE"),
+        call("SELECT COUNT(*) AS ROW_COUNT FROM BANK_MARKETING"),
+    ]
     connection.close.assert_called_once()
-    cursor.close.assert_called_once()
+    assert cursor.close.call_count == 2
 
 
 def test_rejects_other_configured_role(

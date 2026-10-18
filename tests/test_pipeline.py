@@ -1,5 +1,7 @@
 """Tests for the classified, guarded natural-language query pipeline."""
 
+from __future__ import annotations
+
 from pathlib import Path
 from typing import Any, Literal
 
@@ -11,6 +13,8 @@ from src.pipeline import (
     GeneratedAnswer,
     Pipeline,
 )
+from src.config_loader import load_dataset_config
+from src.prompts import build_sql_prompt
 from src.snowflake_client import SnowflakeClientError
 
 
@@ -115,6 +119,27 @@ def test_ask_executes_guarded_sql_and_returns_complete_result(
     assert "BANK_MARKETING" in llm.prompts[1]
     assert "job is 'admin.'" in llm.prompts[1]
     assert "returned result rows" in llm.prompts[-1]
+    assert "Trusted dataset schema" in llm.prompts[0]
+    assert "counting all clients" in llm.prompts[0]
+    assert "age > 200 is answerable" in llm.prompts[0]
+    assert "Never claim a field is absent unless its name is absent" in llm.prompts[0]
+    assert "Do not claim that the question is unsupported because you" in llm.prompts[0]
+
+
+def test_sql_prompt_requires_exactly_quoted_column_identifiers() -> None:
+    """Tell Gemma to preserve schema casing for Snowflake column identifiers."""
+    config = load_dataset_config(CONFIG_PATH)
+    prompt = build_sql_prompt(
+        "schema",
+        config,
+        "Show the default, day, and month columns.",
+        [],
+    )
+
+    assert "Double-quote every column identifier exactly as its case" in prompt
+    assert 'write age as "age"' in prompt
+    assert 'the keyword-like columns as "default", "day", and "month"' in prompt
+    assert 'WHERE "job" = ' in prompt
 
 
 def test_ask_retries_after_sql_guard_rejection(

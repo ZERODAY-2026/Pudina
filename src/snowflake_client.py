@@ -49,12 +49,27 @@ class SnowflakeClient:
                 "SNOWFLAKE_ROLE must be DATAMIND_READER for read-only queries."
             )
 
+        connection: SnowflakeConnection | None = None
         try:
-            self._connection: SnowflakeConnection | None = (
-                snowflake.connector.connect(role="DATAMIND_READER", **settings)
-            )
+            connection = snowflake.connector.connect(role="DATAMIND_READER", **settings)
+            cursor = connection.cursor()
+            try:
+                cursor.execute("USE SECONDARY ROLES NONE")
+            finally:
+                cursor.close()
         except SnowflakeError as exc:
-            raise SnowflakeClientError(f"Could not connect to Snowflake: {exc}") from exc
+            if connection is not None:
+                try:
+                    connection.close()
+                except SnowflakeError as close_exc:
+                    raise SnowflakeClientError(
+                        "Could not close Snowflake after setting up the "
+                        f"reader-only session: {close_exc}"
+                    ) from close_exc
+            raise SnowflakeClientError(
+                f"Could not establish a reader-only Snowflake session: {exc}"
+            ) from exc
+        self._connection = connection
 
     @staticmethod
     def _required_setting(name: str) -> str:

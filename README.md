@@ -43,6 +43,12 @@ Check the configured Gemma backend with:
 python -m scripts.gemma_smoke
 ```
 
+Run project scripts from the project root as modules with `-m`, for example
+`python -m scripts.gemma_smoke` or `python -m scripts.count_rows BANK_MARKETING`.
+Running a script by file path (such as `python scripts/count_rows.py`)
+does not add the project root to Python's import path, so the `src` package
+cannot be found.
+
 ## Snowflake setup and Bank Marketing data
 Copy scripts/setup.sql.example to scripts/setup.sql, replace <your_user> with your Snowflake username, and run it in Snowsight as ACCOUNTADMIN.
 Run `scripts/setup.sql` as a Snowflake administrator. Grant the created
@@ -72,6 +78,30 @@ python -m scripts.count_rows BANK_MARKETING
 The second command prints the row count and Snowflake query ID. If the archive
 extracts `bank-full.csv` under a different subdirectory, pass that extracted
 file path instead.
+
+## Live verification
+
+After the full CSV is loaded and `.env` contains the Snowflake reader/loader
+roles and Gemma backend settings, run this one command from the project root:
+
+```powershell
+python -m scripts.verify_live
+```
+
+The verifier checks required settings, confirms `BANK_MARKETING` has exactly
+45,211 rows and prints its query ID, proves the reader role rejects a zero-row
+INSERT, tests Gemma text and JSON output, runs three data questions, and checks
+ambiguous, empty-result, unsupported, unsafe-SQL, and prompt-injection behavior.
+It prints each result as PASS or FAIL, does not print configured secrets, and
+stops at the first failure. The unsafe-SQL probe forces a `DROP TABLE` response
+through the guard; it is blocked before any SQL is sent to Snowflake.
+Reader connections disable Snowflake secondary roles so a loader role granted
+to the same user cannot silently add write access to the app session.
+
+For a local Ollama backend, start Ollama and ensure `gemma3:4b` is available
+before running the verifier. If a check fails, follow the action printed for
+that step; environment credentials and role grants must be configured manually
+in the local `.env` and Snowflake account.
 
 ## Dataset schema configuration
 

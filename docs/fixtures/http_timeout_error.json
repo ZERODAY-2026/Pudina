@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "UPSTREAM_TIMEOUT",
+    "message": "The data service did not respond in time. Please try again."
+  }
+}

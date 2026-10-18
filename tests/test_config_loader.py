@@ -35,7 +35,9 @@ def test_schema_prompt_contains_every_table_and_column() -> None:
             for sample in column.sample_values:
                 formatted_sample = repr(sample) if isinstance(sample, str) else str(sample)
                 assert formatted_sample in prompt
-    assert "pdays uses 999" in prompt
+    assert "pdays = -1" in prompt
+    assert "unknown in job, education, contact, and poutcome" in prompt
+    assert "target column y indicates whether the client subscribed" in prompt
 
 
 def test_switching_config_path_changes_schema_text(tmp_path: Path) -> None:

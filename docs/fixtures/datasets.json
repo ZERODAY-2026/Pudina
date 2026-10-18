@@ -1,0 +1,15 @@
+{
+  "datasets": [
+    {
+      "id": "bank-marketing",
+      "name": "UCI Bank Marketing",
+      "description": "Portuguese bank campaign contacts and term-deposit subscription outcomes.",
+      "example_questions": [
+        "How many clients are in the dataset?",
+        "How many clients subscribed to a term deposit?",
+        "What is the average age of clients?",
+        "How many clients had a housing loan?"
+      ]
+    }
+  ]
+}
