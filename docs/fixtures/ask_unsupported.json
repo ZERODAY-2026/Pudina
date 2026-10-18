@@ -1,0 +1,14 @@
+{
+  "status": "unsupported",
+  "answer": "I can't predict future subscriptions. I can answer read-only questions about historical Bank Marketing contacts and outcomes, such as subscription counts by job or month.",
+  "explanation": "The dataset contains historical campaign outcomes, not future observations or a predictive model.",
+  "assumptions": [],
+  "sql": null,
+  "columns": [],
+  "rows": [],
+  "row_count": 0,
+  "truncated": false,
+  "query_id": null,
+  "clarifying_question": null,
+  "elapsed_ms": 25
+}

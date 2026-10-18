@@ -15,6 +15,7 @@ Gemma is accessed through a single wrapper in src/llm.py so the backend can be s
 PROJECT: DataMind (Hacktoberfest PS1): React frontend + FastAPI backend over an existing Python pipeline (Gemma for language tasks, Snowflake for all computation).
 The single source of truth between frontend and backend is docs/api_contract.md and docs/fixtures/*.json. Neither side may change response shapes without updating the contract and fixtures first.
 Hard rules: no secrets, real usernames or data files in the repo; Snowflake runs every query; read-only role for the app; dataset-agnostic via config/*.yaml; Windows/PowerShell is the primary dev environment (no bash-only scripts); held-out eval questions are never used for tuning.
+ROLE: BACKEND. Only modify src/, scripts/, config/, eval/, tests/, docs/ (except docs/frontend.md), requirements.txt, .env.example. Never touch frontend/.
 REPO LAYOUT
 datamind/
   config/ (one YAML per dataset)

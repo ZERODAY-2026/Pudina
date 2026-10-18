@@ -1,0 +1,14 @@
+{
+  "status": "clarify",
+  "answer": null,
+  "explanation": "A ranking needs a metric because several fields could define 'best'.",
+  "assumptions": [],
+  "sql": null,
+  "columns": [],
+  "rows": [],
+  "row_count": 0,
+  "truncated": false,
+  "query_id": null,
+  "clarifying_question": "Which metric should define the best job: number of clients, average balance, or subscription rate?",
+  "elapsed_ms": 18
+}

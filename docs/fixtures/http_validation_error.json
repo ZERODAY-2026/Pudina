@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "question must contain between 1 and 1000 characters."
+  }
+}

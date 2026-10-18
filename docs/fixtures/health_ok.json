@@ -1,0 +1,17 @@
+{
+  "status": "ok",
+  "checks": {
+    "config": {
+      "ok": true,
+      "message": "Bank Marketing dataset configuration loaded."
+    },
+    "snowflake": {
+      "ok": true,
+      "message": "Snowflake reader connection is available."
+    },
+    "gemma": {
+      "ok": true,
+      "message": "Gemma backend is responding."
+    }
+  }
+}
