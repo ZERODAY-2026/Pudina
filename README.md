@@ -1,4 +1,6 @@
-# DataMind
+# Pudina
+
+## DataMind
 
 DataMind is a natural-language-to-data agent for the ZeroDay OSS Hacktoberfest
 2026 project. It turns plain-English questions into answers computed from live
